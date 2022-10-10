@@ -44,10 +44,9 @@ jobs:
       - name: Repository Dispatch
         uses: peter-evans/repository-dispatch@v1.1.3
         with:
-          token: ${{ secrets.ACTION_HOOK_TOKEN }}
+          token: ${{ secrets.UPSTREAM_SEND }}
           repository: craig8/dispatchdownstream #  ${{ matrix.repo }}
           event-type: ${{ env.EVENT_TYPE }}
-          auth: ${{ env.UPSTREAM_SEND }}
           client-payload: '{"readme": "${{ steps.readme.outputs.content }}"}'
           # client-payload: '{"ref": "${{ github.ref }}", "sha": "${{ github.sha }}", "repository": "${{ github.repository }}", "api_url": "${{ github.api_url }}", "run_id": "${{ github.run_id }}" }'
 
