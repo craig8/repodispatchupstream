@@ -47,7 +47,7 @@ jobs:
           token: ${{ secrets.UPSTREAM_SEND }}
           repository: craig8/dispatchdownstream #  ${{ matrix.repo }}
           event-type: ${{ env.EVENT_TYPE }}
-          client-payload: '{"readme": "${{ steps.readme.outputs.content }}"}'
+          client-payload: '{"readme": "SENDING DATA OVER THE wall!"}'
           # client-payload: '{"ref": "${{ github.ref }}", "sha": "${{ github.sha }}", "repository": "${{ github.repository }}", "api_url": "${{ github.api_url }}", "run_id": "${{ github.run_id }}" }'
 
         # - run: env
