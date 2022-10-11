@@ -1,0 +1,58 @@
+name: Send README file to downstream
+
+on:
+  push:
+    branches:
+      - develop
+
+  #     - main
+  # pull_request:
+  #   branches:
+  #   - develop
+
+env:
+  LANG: en_US.utf-8
+  LC_ALL: en_US.utf-8
+  PYTHON_VERSION: '3.8'
+  EVENT_TYPE: send-file
+
+jobs:
+  send-file:
+    # strategy:
+    #   matrix:
+    #     # To add more Volttron modular repos that need to be tested against a version of volttron-core,
+    #     # add the name of repo to the list below.
+    #     # The name of the repo takes the following form: <OWNER>/<REPO NAME>
+    #     # For example, to add the OpenADR agent repo, use the following name:
+    #     # VOLTTRON/volttron-openadr-ven
+    #     repo: [ VOLTTRON/volttron-listener-agent ]
+    #       # , 'VOLTTRON/volttron-openadr-ven' ]
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Read README
+        id: readme
+        uses: juliangruber/read-file-action@v1
+        with:
+          path: ./README.md
+
+      - name: Repository Dispatch
+        uses: peter-evans/repository-dispatch@v1.1.3
+        with:
+          token: ${{ secrets.UPSTREAM_SEND }}
+          repository: craig8/repodispatchdownstream #  ${{ matrix.repo }}
+          event-type: ${{ env.EVENT_TYPE }}
+          client-payload: '{"readme": "SENDING DATA OVER THE wall!"}'
+          # client-payload: '{"ref": "${{ github.ref }}", "sha": "${{ github.sha }}", "repository": "${{ github.repository }}", "api_url": "${{ github.api_url }}", "run_id": "${{ github.run_id }}" }'
+
+        # - run: env
+        # - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
+        # - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
+        # - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
+
+        
